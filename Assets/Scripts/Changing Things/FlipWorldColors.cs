@@ -31,34 +31,27 @@ public class FlipWorldColors : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
         {
             colorsFlipped = !colorsFlipped;
-            t = 0;
         }
 
         if (colorsFlipped)
         {
-            if (t < 1)
-            {
-                for (int i = 0; i < renderers.Length; i++)
-                {
-                    renderers[i].material.color = Color.Lerp(originalColors[i], flippedColor, t);
-                }
-                t += Time.deltaTime;
-
-            }
+            t += Time.deltaTime;
+            if (t > 1) t = 1;
         }
         else
         {
-            if (t < 1)
-            {
-                for (int i = 0; i < renderers.Length; i++)
-                {
-                    renderers[i].material.color = Color.Lerp(flippedColor, originalColors[i], t);
-                }
-                t += Time.deltaTime;
-
-            }
+            t -= Time.deltaTime;
+            if (t < 0) t = 0;
         }
 
-        text.Input = t;
+        if (t >= 0 || t <= 1){
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                renderers[i].material.color = Color.Lerp(originalColors[i], flippedColor, t);
+            }
+
+            text.Input = t;
+        }
+            
     }
 }
